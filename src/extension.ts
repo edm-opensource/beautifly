@@ -1,10 +1,16 @@
 import * as vscode from 'vscode';
 import {window, workspace, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument} from 'vscode';
 export function activate(context: vscode.ExtensionContext) {
-
-    let controller = new BeautiflierController();
-
-    context.subscriptions.push(controller);
+    
+    console.log("Activation")
+    
+    var disposable = vscode.commands.registerCommand('extension.sayHello', () => {
+        // The code you place here will be executed every time your command is executed
+        let controller = new BeautiflierController();  
+        context.subscriptions.push(controller);
+    });
+    
+    context.subscriptions.push(disposable);
 }
 
 class BeautiflierController {
@@ -24,10 +30,7 @@ class BeautiflierController {
 
     private _onEvent() {
         commands.executeCommand('editor.action.format').then(() => {
-            console.log('i format');
-            // setTimeout(function() {
-            //     
-            // }, 400);
+            commands.executeCommand('workbench.action.files.save');
         });
     }
 }
